@@ -10,8 +10,9 @@ namespace XYZEngine
 
 	void RigidbodyComponent::Update(float deltaTime)
 	{
-		transform->MoveBy(linearVelocity);
-		transform->RotateBy(angleVelocity);
+		// Переводим скорость в смещение за кадр через deltaTime
+		transform->MoveBy(linearVelocity * deltaTime);
+		transform->RotateBy(angleVelocity * deltaTime);
 
 		linearVelocity = (1.f - linearDamping * deltaTime) * linearVelocity;
 		angleVelocity = (1.f - angleDamping * deltaTime) * angleVelocity;

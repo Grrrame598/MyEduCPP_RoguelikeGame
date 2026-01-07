@@ -113,10 +113,75 @@ namespace XYZEngine
 		textureMaps.erase(textureMap);
 	}
 
+	// Реализация методов для работы со звуками (SoundBuffer)
+	void ResourceSystem::LoadSoundBuffer(const std::string& name, std::string sourcePath)
+	{
+		if (soundBuffers.find(name) != soundBuffers.end())
+		{
+			return;
+		}
+
+		sf::SoundBuffer* newSoundBuffer = new sf::SoundBuffer();
+		if (newSoundBuffer->loadFromFile(sourcePath))
+		{
+			soundBuffers.emplace(name, newSoundBuffer);
+		}
+	}
+
+	const sf::SoundBuffer* ResourceSystem::GetSoundBufferShared(const std::string& name) const
+	{
+		return soundBuffers.find(name)->second;
+	}
+
+	sf::SoundBuffer* ResourceSystem::GetSoundBufferCopy(const std::string& name) const
+	{
+		return new sf::SoundBuffer(*soundBuffers.find(name)->second);
+	}
+
+	void ResourceSystem::DeleteSharedSoundBuffer(const std::string& name)
+	{
+		auto soundBufferPair = soundBuffers.find(name);
+
+		sf::SoundBuffer* deletingSoundBuffer = soundBufferPair->second;
+		soundBuffers.erase(soundBufferPair);
+		delete deletingSoundBuffer;
+	}
+
+	// Реализация методов для работы с музыкой (Music)
+	void ResourceSystem::LoadMusic(const std::string& name, std::string sourcePath)
+	{
+		if (musics.find(name) != musics.end())
+		{
+			return;
+		}
+
+		sf::Music* newMusic = new sf::Music();
+		if (newMusic->openFromFile(sourcePath))
+		{
+			musics.emplace(name, newMusic);
+		}
+	}
+
+	sf::Music* ResourceSystem::GetMusic(const std::string& name) const
+	{
+		return musics.find(name)->second;
+	}
+
+	void ResourceSystem::DeleteMusic(const std::string& name)
+	{
+		auto musicPair = musics.find(name);
+
+		sf::Music* deletingMusic = musicPair->second;
+		musics.erase(musicPair);
+		delete deletingMusic;
+	}
+
 	void ResourceSystem::Clear()
 	{
 		DeleteAllTextures();
 		DeleteAllTextureMaps();
+		DeleteAllSoundBuffers();
+		DeleteAllMusics();
 	}
 
 	void ResourceSystem::DeleteAllTextures()
@@ -145,6 +210,36 @@ namespace XYZEngine
 		for (const auto& key : keysToDelete)
 		{
 			DeleteSharedTextureMap(key);
+		}
+	}
+
+	void ResourceSystem::DeleteAllSoundBuffers()
+	{
+		std::vector<std::string> keysToDelete;
+
+		for (const auto& soundBufferPair : soundBuffers)
+		{
+			keysToDelete.push_back(soundBufferPair.first);
+		}
+
+		for (const auto& key : keysToDelete)
+		{
+			DeleteSharedSoundBuffer(key);
+		}
+	}
+
+	void ResourceSystem::DeleteAllMusics()
+	{
+		std::vector<std::string> keysToDelete;
+
+		for (const auto& musicPair : musics)
+		{
+			keysToDelete.push_back(musicPair.first);
+		}
+
+		for (const auto& key : keysToDelete)
+		{
+			DeleteMusic(key);
 		}
 	}
 }
