@@ -1,5 +1,7 @@
 #include "Wall.h"
 #include <GameWorld.h>
+#include <Logger.h>
+#include <cassert>
 
 namespace XYZRoguelike
 {
@@ -8,8 +10,17 @@ namespace XYZRoguelike
 		gameObject = XYZEngine::GameWorld::Instance()->CreateGameObject("Wall");
 
 		renderer = gameObject->AddComponent<XYZEngine::SpriteRendererComponent>();
-		renderer->SetTexture(*XYZEngine::ResourceSystem::Instance()->GetTextureShared("platform"));
-		renderer->SetPixelSize(widthPixels, heightPixels);
+		if (auto tex = XYZEngine::ResourceSystem::Instance()->GetTextureShared("platform"))
+		{
+			renderer->SetTexture(*tex);
+			renderer->SetPixelSize(widthPixels, heightPixels);
+		}
+		else
+		{
+			LOG_ERROR("Не удалось установить текстуру стены: platform");
+			assert(false && "Texture 'platform' is required for Wall");
+			return;
+		}
 
 		auto body = gameObject->AddComponent<XYZEngine::RigidbodyComponent>();
 		body->SetKinematic(true);

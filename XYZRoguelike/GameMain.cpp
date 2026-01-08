@@ -32,33 +32,40 @@ int main()
 	SetupLogger();
 	LOG_INFO("Запуск игры");
 
-	XYZEngine::RenderSystem::Instance()->SetMainWindow(new sf::RenderWindow(sf::VideoMode(1280, 720), "XYZRoguelike"));
-
-	auto resourceSystem = XYZEngine::ResourceSystem::Instance();
-
-	resourceSystem->LoadTexture("ball", "Resources/Textures/ball.png");
-	resourceSystem->LoadTexture("platform", "Resources/Textures/platform.png");
-	LOG_INFO("Текстуры ball и platform загружены");
-
-	// Загружаем фоновую музыку и сразу запускаем в цикле
-	resourceSystem->LoadMusic("bgm_main", "Resources/Music/Clinthammer__Background_Music.wav");
-	if (resourceSystem->GetMusic("bgm_main") != nullptr)
+	try
 	{
-		resourceSystem->GetMusic("bgm_main")->setLoop(true);
-		resourceSystem->GetMusic("bgm_main")->play();
-		LOG_INFO("Фоновая музыка bgm_main запущена в цикле");
+		XYZEngine::RenderSystem::Instance()->SetMainWindow(new sf::RenderWindow(sf::VideoMode(1280, 720), "XYZRoguelike"));
+
+		auto resourceSystem = XYZEngine::ResourceSystem::Instance();
+
+		resourceSystem->LoadTexture("ball", "Resources/Textures/ball.png");
+		resourceSystem->LoadTexture("platform", "Resources/Textures/platform.png");
+		LOG_INFO("Текстуры ball и platform загружены");
+
+		// Загружаем фоновую музыку и сразу запускаем в цикле
+		resourceSystem->LoadMusic("bgm_main", "Resources/Music/Clinthammer__Background_Music.wav");
+		if (auto music = resourceSystem->GetMusic("bgm_main"))
+		{
+			music->setLoop(true);
+			music->play();
+			LOG_INFO("Фоновая музыка bgm_main запущена в цикле");
+		}
+		else
+		{
+			LOG_WARN("Не удалось загрузить фоновую музыку bgm_main");
+		}
+
+		auto developerLevel = std::make_shared<DeveloperLevel>();
+		developerLevel->Start();
+		LOG_INFO("DeveloperLevel запущен");
+
+		XYZEngine::Engine::Instance()->Run();
+		LOG_INFO("Завершение работы движка");
+		return 0;
 	}
-	else
+	catch (const std::exception& ex)
 	{
-		LOG_WARN("Не удалось загрузить фоновую музыку bgm_main");
+		LOG_ERROR(std::string("Критическая ошибка при инициализации: ") + ex.what());
+		return 1;
 	}
-
-	auto developerLevel = std::make_shared<DeveloperLevel>();
-	developerLevel->Start();
-	LOG_INFO("DeveloperLevel запущен");
-
-	XYZEngine::Engine::Instance()->Run();
-	LOG_INFO("Завершение работы движка");
-
-	return 0;
 }

@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "ResourceSystem.h"
+#include "Logger.h"
+#include <stdexcept>
 
 namespace XYZEngine
 {
@@ -13,6 +15,7 @@ namespace XYZEngine
 	{
 		if (textures.find(name) != textures.end())
 		{
+			LOG_WARN("Текстура уже загружена: " + name);
 			return;
 		}
 
@@ -22,12 +25,18 @@ namespace XYZEngine
 			newTexture->setSmooth(isSmooth);
 			textures.emplace(name, newTexture);
 		}
+		else
+		{
+			LOG_ERROR("Не удалось загрузить текстуру: " + sourcePath);
+			throw std::runtime_error("Failed to load texture: " + sourcePath);
+		}
 	}
 	std::shared_ptr<sf::Texture> ResourceSystem::GetTextureShared(const std::string& name) const
 	{
 		auto it = textures.find(name);
 		if (it == textures.end())
 		{
+			LOG_WARN("Текстура не найдена: " + name);
 			return nullptr;
 		}
 		return it->second;
@@ -37,6 +46,7 @@ namespace XYZEngine
 		auto it = textures.find(name);
 		if (it == textures.end())
 		{
+			LOG_WARN("Текстура не найдена: " + name);
 			return nullptr;
 		}
 		return std::make_shared<sf::Texture>(*it->second);
@@ -55,6 +65,7 @@ namespace XYZEngine
 	{
 		if (textureMaps.find(name) != textureMaps.end())
 		{
+			LOG_WARN("Атлас уже загружен: " + name);
 			return;
 		}
 
@@ -92,12 +103,18 @@ namespace XYZEngine
 
 			textureMaps.emplace(name, textureMapElements);
 		}
+		else
+		{
+			LOG_ERROR("Не удалось загрузить атлас: " + sourcePath);
+			throw std::runtime_error("Failed to load texture map: " + sourcePath);
+		}
 	}
 	std::shared_ptr<sf::Texture> ResourceSystem::GetTextureMapElementShared(const std::string& name, int elementIndex) const
 	{
 		auto textureMap = textureMaps.find(name);
 		if (textureMap == textureMaps.end() || elementIndex < 0 || elementIndex >= static_cast<int>(textureMap->second.size()))
 		{
+			LOG_WARN("Элемент атласа не найден: " + name);
 			return nullptr;
 		}
 		return textureMap->second[elementIndex];
@@ -107,6 +124,7 @@ namespace XYZEngine
 		auto textureMap = textureMaps.find(name);
 		if (textureMap == textureMaps.end() || elementIndex < 0 || elementIndex >= static_cast<int>(textureMap->second.size()))
 		{
+			LOG_WARN("Элемент атласа не найден: " + name);
 			return nullptr;
 		}
 		return std::make_shared<sf::Texture>(*textureMap->second[elementIndex]);
@@ -135,6 +153,7 @@ namespace XYZEngine
 	{
 		if (soundBuffers.find(name) != soundBuffers.end())
 		{
+			LOG_WARN("Звуковой буфер уже загружен: " + name);
 			return;
 		}
 
@@ -143,6 +162,11 @@ namespace XYZEngine
 		{
 			soundBuffers.emplace(name, newSoundBuffer);
 		}
+		else
+		{
+			LOG_ERROR("Не удалось загрузить звуковой буфер: " + sourcePath);
+			throw std::runtime_error("Failed to load sound buffer: " + sourcePath);
+		}
 	}
 
 	std::shared_ptr<sf::SoundBuffer> ResourceSystem::GetSoundBufferShared(const std::string& name) const
@@ -150,6 +174,7 @@ namespace XYZEngine
 		auto it = soundBuffers.find(name);
 		if (it == soundBuffers.end())
 		{
+			LOG_WARN("Звуковой буфер не найден: " + name);
 			return nullptr;
 		}
 		return it->second;
@@ -160,6 +185,7 @@ namespace XYZEngine
 		auto it = soundBuffers.find(name);
 		if (it == soundBuffers.end())
 		{
+			LOG_WARN("Звуковой буфер не найден: " + name);
 			return nullptr;
 		}
 		return std::make_shared<sf::SoundBuffer>(*it->second);
@@ -180,6 +206,7 @@ namespace XYZEngine
 	{
 		if (musics.find(name) != musics.end())
 		{
+			LOG_WARN("Музыка уже загружена: " + name);
 			return;
 		}
 
@@ -188,6 +215,11 @@ namespace XYZEngine
 		{
 			musics.emplace(name, newMusic);
 		}
+		else
+		{
+			LOG_ERROR("Не удалось загрузить музыку: " + sourcePath);
+			throw std::runtime_error("Failed to load music: " + sourcePath);
+		}
 	}
 
 	std::shared_ptr<sf::Music> ResourceSystem::GetMusic(const std::string& name) const
@@ -195,6 +227,7 @@ namespace XYZEngine
 		auto it = musics.find(name);
 		if (it == musics.end())
 		{
+			LOG_WARN("Музыка не найдена: " + name);
 			return nullptr;
 		}
 		return it->second;

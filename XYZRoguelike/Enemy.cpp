@@ -1,4 +1,6 @@
 #include "Enemy.h"
+#include <Logger.h>
+#include <cassert>
 
 namespace XYZRoguelike
 {
@@ -8,8 +10,17 @@ namespace XYZRoguelike
 
 		auto renderer = gameObject->AddComponent<XYZEngine::SpriteRendererComponent>();
 		// Используем другую текстуру, чтобы отличать врага от игрока
-		renderer->SetTexture(*XYZEngine::ResourceSystem::Instance()->GetTextureShared("platform"));
-		renderer->SetPixelSize(64, 16);
+		if (auto tex = XYZEngine::ResourceSystem::Instance()->GetTextureShared("platform"))
+		{
+			renderer->SetTexture(*tex);
+			renderer->SetPixelSize(64, 16);
+		}
+		else
+		{
+			LOG_ERROR("Не удалось установить текстуру врага: platform");
+			assert(false && "Texture 'platform' is required for Enemy");
+			return;
+		}
 
 		auto body = gameObject->AddComponent<XYZEngine::RigidbodyComponent>();
 
