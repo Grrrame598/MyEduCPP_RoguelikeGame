@@ -3,3 +3,32 @@
 **/x86/
 *.vcxproj.filters
 *.vcxproj.user
+
+# Build outputs
+**/Debug/
+**/Release/
+**/bin/
+**/obj/
+**/ipch/
+
+# Intermediate / compiler artifacts
+*.obj
+*.pdb
+*.ilk
+*.tlog
+*.pch
+*.ipch
+*.log
+*.cache
+*.tmp
+
+# Visual Studio databases
+*.VC.db
+*.opendb
+
+# Local logs
+Logs/
+
+# Internal docs (не публикуем)
+PROGRESS.md
+FEEDBACK.md
