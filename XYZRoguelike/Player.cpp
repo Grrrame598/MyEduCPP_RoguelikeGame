@@ -1,6 +1,7 @@
 #include "Player.h"
 #include <ResourceSystem.h>
 #include <SpriteColliderComponent.h>
+#include <HealthComponent.h>
 #include <Logger.h>
 #include <cassert>
 
@@ -34,6 +35,11 @@ namespace XYZRoguelike
 		auto body = gameObject->AddComponent<XYZEngine::RigidbodyComponent>();
 
 		auto collider = gameObject->AddComponent<XYZEngine::SpriteColliderComponent>();
+
+		auto health = gameObject->AddComponent<XYZEngine::HealthComponent>();
+		health->SetMaxHealth(100.f);
+		health->SetHealth(100.f);
+		health->SetArmor(20.f);
 	}
 
 	XYZEngine::GameObject* Player::GetGameObject()

@@ -2,6 +2,7 @@
 #include <GameWorld.h>
 #include <Logger.h>
 #include <cassert>
+#include <HealthComponent.h> // на будущее, если понадобится нерушимость/прочность
 
 namespace XYZRoguelike
 {

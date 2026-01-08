@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include <Logger.h>
+#include <HealthComponent.h>
 #include <cassert>
 
 namespace XYZRoguelike
@@ -27,6 +28,11 @@ namespace XYZRoguelike
 		auto collider = gameObject->AddComponent<XYZEngine::SpriteColliderComponent>();
 
 		chase = gameObject->AddComponent<XYZEngine::PlayerChaseComponent>();
+
+		auto health = gameObject->AddComponent<XYZEngine::HealthComponent>();
+		health->SetMaxHealth(80.f);
+		health->SetHealth(80.f);
+		health->SetArmor(10.f);
 	}
 
 	XYZEngine::GameObject* Enemy::GetGameObject()
