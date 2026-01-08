@@ -22,8 +22,8 @@ namespace XYZEngine
 		float ApplyDamage(float damage);
 
 	private:
-		float maxHealth = 100.f;
-		float health = 100.f;
+		float maxHealth = 0.f;
+		float health = 0.f;
 		float armor = 0.f;
 		bool isDead = false;
 	};
