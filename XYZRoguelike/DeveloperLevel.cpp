@@ -16,6 +16,10 @@ namespace XYZRoguelike
 		// Возвращаем нормальное преследование игрока
 		enemy->SetChaseParams(800.f, 120.f, 32.f);
 
+		// Настраиваем атаки: игрок ↔ враг
+		enemy->SetAttackTarget(player->GetGameObject());
+		player->SetAttackTarget(enemy->GetGameObject());
+
 		// Разнесем позиции: игрок по умолчанию в (0,0), враг внутри периметра слева-сверху
 		auto enemyTransform = enemy->GetGameObject()->GetComponent<TransformComponent>();
 		if (enemyTransform != nullptr)

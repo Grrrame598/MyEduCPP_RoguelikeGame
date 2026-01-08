@@ -2,6 +2,7 @@
 #include <ResourceSystem.h>
 #include <SpriteColliderComponent.h>
 #include <HealthComponent.h>
+#include <AttackComponent.h>
 #include <Logger.h>
 #include <cassert>
 
@@ -40,6 +41,19 @@ namespace XYZRoguelike
 		health->SetMaxHealth(100.f);
 		health->SetHealth(100.f);
 		health->SetArmor(20.f);
+
+		attack = gameObject->AddComponent<XYZEngine::AttackComponent>();
+	}
+
+	void Player::SetAttackTarget(XYZEngine::GameObject* target)
+	{
+		if (attack != nullptr)
+		{
+			attack->SetTarget(target);
+			attack->SetDamage(15.f);
+			attack->SetRange(48.f);
+			attack->SetCooldown(0.8f);
+		}
 	}
 
 	XYZEngine::GameObject* Player::GetGameObject()

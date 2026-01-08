@@ -1,6 +1,7 @@
 #include "Enemy.h"
 #include <Logger.h>
 #include <HealthComponent.h>
+#include <AttackComponent.h>
 #include <cassert>
 
 namespace XYZRoguelike
@@ -33,6 +34,11 @@ namespace XYZRoguelike
 		health->SetMaxHealth(80.f);
 		health->SetHealth(80.f);
 		health->SetArmor(10.f);
+
+		attack = gameObject->AddComponent<XYZEngine::AttackComponent>();
+		attack->SetDamage(10.f);
+		attack->SetRange(48.f);
+		attack->SetCooldown(1.0f);
 	}
 
 	XYZEngine::GameObject* Enemy::GetGameObject()
@@ -55,6 +61,14 @@ namespace XYZRoguelike
 			chase->SetDetectionRadius(detectionRadius);
 			chase->SetSpeed(speed);
 			chase->SetStopDistance(stopDistance);
+		}
+	}
+
+	void Enemy::SetAttackTarget(XYZEngine::GameObject* target)
+	{
+		if (attack != nullptr)
+		{
+			attack->SetTarget(target);
 		}
 	}
 }

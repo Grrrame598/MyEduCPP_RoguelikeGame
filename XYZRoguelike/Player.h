@@ -6,6 +6,7 @@
 #include "RenderSystem.h"
 #include "InputComponent.h"
 #include "GameObject.h"
+#include "AttackComponent.h"
 
 namespace XYZRoguelike
 {
@@ -14,7 +15,9 @@ namespace XYZRoguelike
 	public:
 		Player();
 		XYZEngine::GameObject* GetGameObject();
+		void SetAttackTarget(XYZEngine::GameObject* target);
 	private:
 		XYZEngine::GameObject* gameObject;
+		XYZEngine::AttackComponent* attack = nullptr;
 	};
 }
