@@ -14,7 +14,7 @@
 - Конфиг без магических чисел: `Config/GameConfig.h` (баланс, эффекты, камера, пол).
 
 ## Скриншот
-![Gameplay](docs/img/screenshot.png)
+![Gameplay](docs/img/screenshot.PNG)
 
 ## Управление
 - Движение: WASD или стрелки.
@@ -25,6 +25,10 @@
 2) Собрать проекты `XYZEngine` и `XYZRoguelike`.
 3) Убедиться, что ресурсы лежат в `XYZRoguelike/Resources` (текстуры/звуки/музыка в репо).
 4) Запустить `XYZRoguelike` (стартовый уровень — `DeveloperLevel`).
+
+## Готовый релиз
+- Последний релиз (Graphics track): [`RoguelikeRelease.zip`](https://github.com/Grrrames598/MyEduCPP_RoguelikeGame/releases/download/v1.0-graphics/RoguelikeRelease.zip) — включает `XYZRoguelike.exe`, нужные DLL и ресурсы.
+- Страница релиза: https://github.com/Grrrames598/MyEduCPP_RoguelikeGame/releases/tag/v1.0-graphics
 
 ## Ветки/дипломные ступени
 - `feature/graphics-shake` — лёгкий уровень (камера).
