@@ -1,7 +1,10 @@
 #pragma once
 
 #include "Component.h"
-#include <SFML/Window.hpp> 
+#include "RigidbodyComponent.h"
+#include "EffectManagerComponent.h"
+#include "Vector.h"
+#include <SFML/Window.hpp>
 
 namespace XYZEngine
 {
@@ -15,8 +18,15 @@ namespace XYZEngine
 
 		float GetHorizontalAxis() const;
 		float GetVerticalAxis() const;
+
+		void SetMove(RigidbodyComponent* body, float speed);
+		void SetEffects(EffectManagerComponent* effects);
 	private:
 		float horizontalAxis = 0.f;
 		float verticalAxis = 0.f;
+
+		RigidbodyComponent* rb = nullptr;
+		float moveSpeed = 0.f;
+		EffectManagerComponent* fx = nullptr;
 	};
 }

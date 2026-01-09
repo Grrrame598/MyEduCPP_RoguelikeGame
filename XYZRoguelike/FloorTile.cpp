@@ -8,20 +8,17 @@ namespace XYZRoguelike
 
 		renderer = gameObject->AddComponent<XYZEngine::SpriteRendererComponent>();
 		auto tex = XYZEngine::ResourceSystem::Instance()->GetTextureShared(Config::Floor::TextureName);
-		if (tex && renderer && tex->getSize().x == tex->getSize().y && static_cast<int>(tex->getSize().x) == static_cast<int>(sizePixels))
+		if (tex && renderer)
 		{
 			renderer->SetTexture(*tex);
-			renderer->SetPixelSize(sizePixels, sizePixels);
+			const int tileSizeInt = static_cast<int>(sizePixels);
+			renderer->SetPixelSize(tileSizeInt, tileSizeInt);
+			// Светлый голубовато-серый оттенок для контраста с аурой
+			renderer->SetColor(sf::Color(190, 210, 220));
 		}
 		else
 		{
-			// Если нет текстуры или размер не совпадает с тайлом — логируем и не падаем.
-			LOG_WARN("Floor texture missing or size mismatch: expected square " + std::to_string(static_cast<int>(sizePixels)) + " px, got " + (tex ? std::to_string(tex->getSize().x) + "x" + std::to_string(tex->getSize().y) : "null"));
-			if (tex)
-			{
-				renderer->SetTexture(*tex);
-				renderer->SetPixelSize(sizePixels, sizePixels);
-			}
+			LOG_WARN("Floor texture missing: expected '" + std::string(Config::Floor::TextureName) + "'");
 		}
 	}
 
@@ -42,7 +39,8 @@ namespace XYZRoguelike
 	{
 		if (renderer != nullptr)
 		{
-			renderer->SetPixelSize(sizePixels, sizePixels);
+			const int tileSizeInt = static_cast<int>(sizePixels);
+			renderer->SetPixelSize(tileSizeInt, tileSizeInt);
 		}
 	}
 }

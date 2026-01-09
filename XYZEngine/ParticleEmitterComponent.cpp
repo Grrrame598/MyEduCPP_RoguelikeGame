@@ -18,6 +18,13 @@ namespace XYZEngine
 		std::uniform_real_distribution<float> lifeDist(params.minLife, params.maxLife);
 		std::uniform_real_distribution<float> sizeDist(params.minSize, params.maxSize);
 
+		// Если частиц уже много, подчистим самые старые, чтобы не раздувать вектор.
+		if (particles.size() >= MaxParticles)
+		{
+			const size_t removeCount = std::min<size_t>(particles.size(), static_cast<size_t>(params.count));
+			particles.erase(particles.begin(), particles.begin() + removeCount);
+		}
+
 		for (int i = 0; i < params.count; ++i)
 		{
 			float angle = angleDist(rng);
