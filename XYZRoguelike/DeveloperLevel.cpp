@@ -1,5 +1,6 @@
 #include "DeveloperLevel.h"
 #include "TransformComponent.h"
+#include "../Config/GameConfig.h"
 
 using namespace XYZEngine;
 
@@ -7,14 +8,23 @@ namespace XYZRoguelike
 {
 	void DeveloperLevel::Start()
 	{
+		// Сначала пол, чтобы отрисовывался под стенами и объектами
+		floorTiles.clear();
+		CreateFloor(Config::Walls::HalfWidth, Config::Walls::HalfHeight, Config::Floor::TileSize);
+
+		// Стены по периметру (кинематичные, блокируют движение)
+		walls.clear();
+		// Ширину периметра немного сузили (512 вместо 640), высоту оставили под окно 720 (±360)
+		// Сегменты перекрываются (шаг меньше длины), чтобы исключить щели
+		CreatePerimeterWalls(Config::Walls::HalfWidth, Config::Walls::HalfHeight, Config::Walls::Thickness, Config::Walls::SegmentLength);
+
 		player = std::make_shared<Player>();
 		enemy = std::make_shared<Enemy>();
 
 		// Настраиваем преследование: цель - игрок, радиус обнаружения и скорость
 		enemy->SetChaseTarget(player->GetGameObject());
-		// Радиус обнаружения ~чуть больше половины диагонали 1280x720 (~800), скорость 120 (в секунду), стоп-дистанция 20
-		// Возвращаем нормальное преследование игрока
-		enemy->SetChaseParams(800.f, 120.f, 32.f);
+		// Радиус обнаружения/скорость/стоп-дистанция берем из конфига
+		enemy->SetChaseParams(Config::Enemy::DetectionRadius, Config::Enemy::ChaseSpeed, Config::Enemy::StopDistance);
 
 		// Настраиваем атаки: игрок ↔ враг
 		enemy->SetAttackTarget(player->GetGameObject());
@@ -24,14 +34,9 @@ namespace XYZRoguelike
 		auto enemyTransform = enemy->GetGameObject()->GetComponent<TransformComponent>();
 		if (enemyTransform != nullptr)
 		{
-			enemyTransform->SetWorldPosition(-300.f, -180.f);
+			enemyTransform->SetWorldPosition(Config::Enemy::SpawnOffsetX, Config::Enemy::SpawnOffsetY);
 		}
 
-		// Ставим стены по периметру окна вокруг игрока (кинематичные, блокируют движение)
-		walls.clear();
-		// Ширину периметра немного сузили (512 вместо 640), высоту оставили под окно 720 (±360)
-		// Сегменты перекрываются (шаг меньше длины), чтобы исключить щели
-		CreatePerimeterWalls(512.f, 360.f, 24.f, 48.f);
 	}
 	void DeveloperLevel::Restart()
 	{
@@ -42,6 +47,7 @@ namespace XYZRoguelike
 	{
 		GameWorld::Instance()->Clear();
 		walls.clear();
+		floorTiles.clear();
 	}
 
 	void DeveloperLevel::CreatePerimeterWalls(float halfWidth, float halfHeight, float wallThickness, float segmentLength)
@@ -65,6 +71,31 @@ namespace XYZRoguelike
 		{
 			spawnWall(-halfWidth, y, wallThickness, segmentLength);
 			spawnWall(halfWidth, y, wallThickness, segmentLength);
+		}
+	}
+
+	void DeveloperLevel::CreateFloor(float halfWidth, float halfHeight, float tileSize)
+	{
+		auto spawnTile = [&](float x, float y)
+		{
+			auto tile = std::make_shared<FloorTile>(tileSize);
+			tile->SetPosition(x, y);
+			floorTiles.push_back(tile);
+		};
+
+		// Кладём пол с запасом: выходим за периметр на толщину стен, чтобы не было просветов при шейке
+		const float margin = -Config::Walls::Thickness;
+		float startX = -halfWidth + margin + tileSize * 0.5f;
+		float startY = -halfHeight + margin + tileSize * 0.5f;
+		float endX = halfWidth - margin - tileSize * 0.5f;
+		float endY = halfHeight - margin - tileSize * 0.5f;
+
+		for (float y = startY; y <= endY; y += tileSize)
+		{
+			for (float x = startX; x <= endX; x += tileSize)
+			{
+				spawnTile(x, y);
+			}
 		}
 	}
 }

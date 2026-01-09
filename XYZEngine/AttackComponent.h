@@ -15,6 +15,7 @@ namespace XYZEngine
 		explicit AttackComponent(GameObject* gameObject);
 
 		void Update(float deltaTime) override;
+		void Render() override {}
 
 		void SetTarget(GameObject* newTarget) { target = newTarget; }
 		void SetDamage(float value) { damage = std::max(0.f, value); }
@@ -23,9 +24,9 @@ namespace XYZEngine
 
 	private:
 		GameObject* target = nullptr;
-		float damage = 10.f;
-		float cooldown = 1.f; // seconds
-		float range = 48.f;
+		float damage = 0.f;
+		float cooldown = 0.f; // seconds
+		float range = 0.f;
 		float timer = 0.f;
 	};
 }

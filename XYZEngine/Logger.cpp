@@ -30,7 +30,6 @@ namespace XYZEngine
 		fs::path filePath(filename);
 		fs::path directory = filePath.parent_path();
 
-		// Создаём каталог для логов, если он не существует и путь указан
 		if (!directory.empty() && !fs::exists(directory))
 		{
 			fs::create_directories(directory);

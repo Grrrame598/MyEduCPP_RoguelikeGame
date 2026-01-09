@@ -2,6 +2,7 @@
 #include <Logger.h>
 #include <HealthComponent.h>
 #include <AttackComponent.h>
+#include "../Config/GameConfig.h"
 #include <cassert>
 
 namespace XYZRoguelike
@@ -11,15 +12,14 @@ namespace XYZRoguelike
 		gameObject = XYZEngine::GameWorld::Instance()->CreateGameObject("Enemy");
 
 		auto renderer = gameObject->AddComponent<XYZEngine::SpriteRendererComponent>();
-		// Используем другую текстуру, чтобы отличать врага от игрока
 		if (auto tex = XYZEngine::ResourceSystem::Instance()->GetTextureShared("platform"))
 		{
 			renderer->SetTexture(*tex);
-			renderer->SetPixelSize(64, 16);
+			renderer->SetPixelSize(Config::Enemy::SpriteWidth, Config::Enemy::SpriteHeight);
 		}
 		else
 		{
-			LOG_ERROR("Не удалось установить текстуру врага: platform");
+			LOG_ERROR("Failed to set enemy texture: platform");
 			assert(false && "Texture 'platform' is required for Enemy");
 			return;
 		}
@@ -31,14 +31,14 @@ namespace XYZRoguelike
 		chase = gameObject->AddComponent<XYZEngine::PlayerChaseComponent>();
 
 		auto health = gameObject->AddComponent<XYZEngine::HealthComponent>();
-		health->SetMaxHealth(80.f);
-		health->SetHealth(80.f);
-		health->SetArmor(10.f);
+		health->SetMaxHealth(Config::Enemy::MaxHealth);
+		health->SetHealth(Config::Enemy::StartHealth);
+		health->SetArmor(Config::Enemy::Armor);
 
 		attack = gameObject->AddComponent<XYZEngine::AttackComponent>();
-		attack->SetDamage(10.f);
-		attack->SetRange(48.f);
-		attack->SetCooldown(1.0f);
+		attack->SetDamage(Config::Enemy::AttackDamage);
+		attack->SetRange(Config::Enemy::AttackRange);
+		attack->SetCooldown(Config::Enemy::AttackCooldown);
 	}
 
 	XYZEngine::GameObject* Enemy::GetGameObject()

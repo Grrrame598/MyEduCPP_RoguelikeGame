@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AttackComponent.h"
 #include "GameObject.h"
+#include "CameraComponent.h"
 
 #include <algorithm>
 
@@ -46,8 +47,18 @@ namespace XYZEngine
 		float dealt = targetHealth->ApplyDamage(damage);
 		if (dealt > 0.f)
 		{
-			LOG_INFO("Атака: " + gameObject->GetName() + " -> " + target->GetName() + " на " + std::to_string(dealt));
+			LOG_INFO("Attack: " + gameObject->GetName() + " -> " + target->GetName() + " for " + std::to_string(dealt));
 			timer = cooldown;
+
+			// Триггерим шейк камеры у атакующего и цели (если камеры есть)
+			if (auto selfCamera = gameObject->GetComponent<CameraComponent>())
+			{
+				selfCamera->TriggerShake();
+			}
+			if (auto targetCamera = target->GetComponent<CameraComponent>())
+			{
+				targetCamera->TriggerShake();
+			}
 		}
 	}
 }

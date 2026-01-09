@@ -24,13 +24,13 @@ void SetupLogger()
 	registry.RegisterLogger("global", logger);
 	registry.SetDefaultLogger(logger);
 
-	LOG_INFO("Логгер инициализирован");
+	LOG_INFO("Logger initialized");
 }
 
 int main()
 {
 	SetupLogger();
-	LOG_INFO("Запуск игры");
+	LOG_INFO("Starting game");
 
 	try
 	{
@@ -40,32 +40,32 @@ int main()
 
 		resourceSystem->LoadTexture("ball", "Resources/Textures/ball.png");
 		resourceSystem->LoadTexture("platform", "Resources/Textures/platform.png");
-		LOG_INFO("Текстуры ball и platform загружены");
+		resourceSystem->LoadTexture("floor", "Resources/Textures/floor.png", false); // floor без сглаживания, чтобы не было швов
+		LOG_INFO("Textures ball, platform, floor loaded");
 
-		// Загружаем фоновую музыку и сразу запускаем в цикле
 		resourceSystem->LoadMusic("bgm_main", "Resources/Music/Clinthammer__Background_Music.wav");
 		if (auto music = resourceSystem->GetMusic("bgm_main"))
 		{
 			music->setLoop(true);
 			music->play();
-			LOG_INFO("Фоновая музыка bgm_main запущена в цикле");
+			LOG_INFO("Background music bgm_main started in loop");
 		}
 		else
 		{
-			LOG_WARN("Не удалось загрузить фоновую музыку bgm_main");
+			LOG_WARN("Failed to load background music bgm_main");
 		}
 
 		auto developerLevel = std::make_shared<DeveloperLevel>();
 		developerLevel->Start();
-		LOG_INFO("DeveloperLevel запущен");
+		LOG_INFO("DeveloperLevel started");
 
 		XYZEngine::Engine::Instance()->Run();
-		LOG_INFO("Завершение работы движка");
+		LOG_INFO("Engine shutdown");
 		return 0;
 	}
 	catch (const std::exception& ex)
 	{
-		LOG_ERROR(std::string("Критическая ошибка при инициализации: ") + ex.what());
+		LOG_ERROR(std::string("Critical initialization error: ") + ex.what());
 		return 1;
 	}
 }

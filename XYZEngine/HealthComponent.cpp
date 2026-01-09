@@ -38,7 +38,7 @@ namespace XYZEngine
 		health = std::max(0.f, health - effectiveDamage);
 		isDead = (health <= 0.f);
 
-		LOG_INFO("Получен урон: " + std::to_string(effectiveDamage) + ", здоровье: " + std::to_string(prevHealth) + " -> " + std::to_string(health));
+		LOG_INFO("Damage taken: " + std::to_string(effectiveDamage) + ", health: " + std::to_string(prevHealth) + " -> " + std::to_string(health));
 		return effectiveDamage;
 	}
 }
