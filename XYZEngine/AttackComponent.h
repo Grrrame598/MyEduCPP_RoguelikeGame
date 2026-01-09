@@ -5,6 +5,7 @@
 #include "Logger.h"
 #include "HealthComponent.h"
 #include "TransformComponent.h"
+#include "ParticleEmitterComponent.h"
 #include <string>
 
 namespace XYZEngine
