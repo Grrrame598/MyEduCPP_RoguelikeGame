@@ -75,5 +75,39 @@ namespace XYZRoguelike::Config
 		constexpr char TextureName[] = "floor";
 		constexpr float TileSize = Walls::SegmentLength; // квадратный тайл по шагу стен
 	}
+
+	// Параметры частиц (средний уровень Graphics)
+	namespace Particles
+	{
+		// Удар/урон
+		namespace Hit
+		{
+			constexpr int Count = 16;
+			constexpr float MinSpeed = 120.f;
+			constexpr float MaxSpeed = 220.f;
+			constexpr float MinLife = 0.25f;
+			constexpr float MaxLife = 0.45f;
+			constexpr float MinSize = 3.f;
+			constexpr float MaxSize = 6.f;
+			constexpr unsigned char ColorR = 220;
+			constexpr unsigned char ColorG = 60;
+			constexpr unsigned char ColorB = 60;
+		}
+
+		// Положительный эффект (heal/buff)
+		namespace Heal
+		{
+			constexpr int Count = 14;
+			constexpr float MinSpeed = 80.f;
+			constexpr float MaxSpeed = 160.f;
+			constexpr float MinLife = 0.35f;
+			constexpr float MaxLife = 0.6f;
+			constexpr float MinSize = 3.f;
+			constexpr float MaxSize = 6.f;
+			constexpr unsigned char ColorR = 90;
+			constexpr unsigned char ColorG = 200;
+			constexpr unsigned char ColorB = 120;
+		}
+	}
 }
 

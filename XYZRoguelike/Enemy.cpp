@@ -2,6 +2,7 @@
 #include <Logger.h>
 #include <HealthComponent.h>
 #include <AttackComponent.h>
+#include <ParticleEmitterComponent.h>
 #include "../Config/GameConfig.h"
 #include <cassert>
 
@@ -34,6 +35,8 @@ namespace XYZRoguelike
 		health->SetMaxHealth(Config::Enemy::MaxHealth);
 		health->SetHealth(Config::Enemy::StartHealth);
 		health->SetArmor(Config::Enemy::Armor);
+
+		gameObject->AddComponent<XYZEngine::ParticleEmitterComponent>();
 
 		attack = gameObject->AddComponent<XYZEngine::AttackComponent>();
 		attack->SetDamage(Config::Enemy::AttackDamage);
