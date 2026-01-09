@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "PlayerChaseComponent.h"
 #include "GameObject.h"
+#include "EffectManagerComponent.h"
 #include <cmath>
 
 namespace XYZEngine
@@ -47,6 +48,7 @@ namespace XYZEngine
 		Vector2Df velocity = { dirNorm.x * speed, dirNorm.y * speed };
 
 		body->SetLinearVelocity(velocity);
+
 	}
 
 	void PlayerChaseComponent::Render()

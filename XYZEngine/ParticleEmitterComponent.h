@@ -32,6 +32,9 @@ namespace XYZEngine
 		void EmitBurst(const ParticleParams& params, const Vector2Df& origin);
 
 	private:
+		// Простейший лимит на количество частиц, чтобы избежать безудержного роста вектора при спаме эффектов.
+		static constexpr size_t MaxParticles = 200;
+
 		struct Particle
 		{
 			sf::Vector2f position;
