@@ -3,6 +3,7 @@
 #include <SpriteColliderComponent.h>
 #include <HealthComponent.h>
 #include <AttackComponent.h>
+#include "../Config/GameConfig.h"
 #include <Logger.h>
 #include <cassert>
 
@@ -16,18 +17,19 @@ namespace XYZRoguelike
 		if (auto tex = XYZEngine::ResourceSystem::Instance()->GetTextureShared("ball"))
 		{
 			playerRenderer->SetTexture(*tex);
-			playerRenderer->SetPixelSize(32, 32);
+			playerRenderer->SetPixelSize(Config::Player::SpriteWidth, Config::Player::SpriteHeight);
 		}
 		else
 		{
-			LOG_ERROR("Не удалось установить текстуру игрока: ball");
+			LOG_ERROR("Failed to set player texture: ball");
 			assert(false && "Texture 'ball' is required for Player");
 			return;
 		}
 
 		auto playerCamera = gameObject->AddComponent<XYZEngine::CameraComponent>();
 		playerCamera->SetWindow(&XYZEngine::RenderSystem::Instance()->GetMainWindow());
-		playerCamera->SetBaseResolution(1280, 720);
+		playerCamera->SetBaseResolution(Config::Camera::BaseWidth, Config::Camera::BaseHeight);
+		playerCamera->SetShakeParams(Config::CameraShake::Amplitude, Config::CameraShake::Duration, Config::CameraShake::Frequency);
 
 		auto playerInput = gameObject->AddComponent<XYZEngine::InputComponent>();
 
@@ -38,11 +40,14 @@ namespace XYZRoguelike
 		auto collider = gameObject->AddComponent<XYZEngine::SpriteColliderComponent>();
 
 		auto health = gameObject->AddComponent<XYZEngine::HealthComponent>();
-		health->SetMaxHealth(100.f);
-		health->SetHealth(100.f);
-		health->SetArmor(20.f);
+		health->SetMaxHealth(Config::Player::MaxHealth);
+		health->SetHealth(Config::Player::StartHealth);
+		health->SetArmor(Config::Player::Armor);
 
 		attack = gameObject->AddComponent<XYZEngine::AttackComponent>();
+		attack->SetDamage(Config::Player::AttackDamage);
+		attack->SetRange(Config::Player::AttackRange);
+		attack->SetCooldown(Config::Player::AttackCooldown);
 	}
 
 	void Player::SetAttackTarget(XYZEngine::GameObject* target)
@@ -50,9 +55,6 @@ namespace XYZRoguelike
 		if (attack != nullptr)
 		{
 			attack->SetTarget(target);
-			attack->SetDamage(15.f);
-			attack->SetRange(48.f);
-			attack->SetCooldown(0.8f);
 		}
 	}
 

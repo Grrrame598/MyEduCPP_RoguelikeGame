@@ -15,7 +15,7 @@ namespace XYZEngine
 	{
 		if (textures.find(name) != textures.end())
 		{
-			LOG_WARN("Текстура уже загружена: " + name);
+			LOG_WARN("Texture already loaded: " + name);
 			return;
 		}
 
@@ -27,7 +27,7 @@ namespace XYZEngine
 		}
 		else
 		{
-			LOG_ERROR("Не удалось загрузить текстуру: " + sourcePath);
+			LOG_ERROR("Failed to load texture: " + sourcePath);
 			throw std::runtime_error("Failed to load texture: " + sourcePath);
 		}
 	}
@@ -36,7 +36,7 @@ namespace XYZEngine
 		auto it = textures.find(name);
 		if (it == textures.end())
 		{
-			LOG_WARN("Текстура не найдена: " + name);
+			LOG_WARN("Texture not found: " + name);
 			return nullptr;
 		}
 		return it->second;
@@ -46,7 +46,7 @@ namespace XYZEngine
 		auto it = textures.find(name);
 		if (it == textures.end())
 		{
-			LOG_WARN("Текстура не найдена: " + name);
+			LOG_WARN("Texture not found: " + name);
 			return nullptr;
 		}
 		return std::make_shared<sf::Texture>(*it->second);
@@ -65,7 +65,7 @@ namespace XYZEngine
 	{
 		if (textureMaps.find(name) != textureMaps.end())
 		{
-			LOG_WARN("Атлас уже загружен: " + name);
+			LOG_WARN("Texture atlas already loaded: " + name);
 			return;
 		}
 
@@ -105,7 +105,7 @@ namespace XYZEngine
 		}
 		else
 		{
-			LOG_ERROR("Не удалось загрузить атлас: " + sourcePath);
+			LOG_ERROR("Failed to load texture atlas: " + sourcePath);
 			throw std::runtime_error("Failed to load texture map: " + sourcePath);
 		}
 	}
@@ -114,7 +114,7 @@ namespace XYZEngine
 		auto textureMap = textureMaps.find(name);
 		if (textureMap == textureMaps.end() || elementIndex < 0 || elementIndex >= static_cast<int>(textureMap->second.size()))
 		{
-			LOG_WARN("Элемент атласа не найден: " + name);
+			LOG_WARN("Texture atlas element not found: " + name);
 			return nullptr;
 		}
 		return textureMap->second[elementIndex];
@@ -124,7 +124,7 @@ namespace XYZEngine
 		auto textureMap = textureMaps.find(name);
 		if (textureMap == textureMaps.end() || elementIndex < 0 || elementIndex >= static_cast<int>(textureMap->second.size()))
 		{
-			LOG_WARN("Элемент атласа не найден: " + name);
+			LOG_WARN("Texture atlas element not found: " + name);
 			return nullptr;
 		}
 		return std::make_shared<sf::Texture>(*textureMap->second[elementIndex]);
@@ -153,7 +153,7 @@ namespace XYZEngine
 	{
 		if (soundBuffers.find(name) != soundBuffers.end())
 		{
-			LOG_WARN("Звуковой буфер уже загружен: " + name);
+			LOG_WARN("Sound buffer already loaded: " + name);
 			return;
 		}
 
@@ -164,7 +164,7 @@ namespace XYZEngine
 		}
 		else
 		{
-			LOG_ERROR("Не удалось загрузить звуковой буфер: " + sourcePath);
+			LOG_ERROR("Failed to load sound buffer: " + sourcePath);
 			throw std::runtime_error("Failed to load sound buffer: " + sourcePath);
 		}
 	}
@@ -174,7 +174,7 @@ namespace XYZEngine
 		auto it = soundBuffers.find(name);
 		if (it == soundBuffers.end())
 		{
-			LOG_WARN("Звуковой буфер не найден: " + name);
+			LOG_WARN("Sound buffer not found: " + name);
 			return nullptr;
 		}
 		return it->second;
@@ -185,7 +185,7 @@ namespace XYZEngine
 		auto it = soundBuffers.find(name);
 		if (it == soundBuffers.end())
 		{
-			LOG_WARN("Звуковой буфер не найден: " + name);
+			LOG_WARN("Sound buffer not found: " + name);
 			return nullptr;
 		}
 		return std::make_shared<sf::SoundBuffer>(*it->second);
@@ -206,7 +206,7 @@ namespace XYZEngine
 	{
 		if (musics.find(name) != musics.end())
 		{
-			LOG_WARN("Музыка уже загружена: " + name);
+			LOG_WARN("Music already loaded: " + name);
 			return;
 		}
 
@@ -217,7 +217,7 @@ namespace XYZEngine
 		}
 		else
 		{
-			LOG_ERROR("Не удалось загрузить музыку: " + sourcePath);
+			LOG_ERROR("Failed to load music: " + sourcePath);
 			throw std::runtime_error("Failed to load music: " + sourcePath);
 		}
 	}
@@ -227,7 +227,7 @@ namespace XYZEngine
 		auto it = musics.find(name);
 		if (it == musics.end())
 		{
-			LOG_WARN("Музыка не найдена: " + name);
+			LOG_WARN("Music not found: " + name);
 			return nullptr;
 		}
 		return it->second;

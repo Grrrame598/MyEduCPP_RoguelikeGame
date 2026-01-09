@@ -10,6 +10,10 @@ namespace XYZEngine
 	public:
 		explicit HealthComponent(GameObject* gameObject);
 
+		// Компонент не требует логики в кадре/рендере, оставляем пустые реализации.
+		void Update(float /*deltaTime*/) override {}
+		void Render() override {}
+
 		void SetMaxHealth(float value);
 		void SetHealth(float value);
 		void SetArmor(float value);

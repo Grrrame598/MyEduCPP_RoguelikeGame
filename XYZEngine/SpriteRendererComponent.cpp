@@ -52,6 +52,10 @@ namespace XYZEngine
 		auto originalSize = sprite->getTexture()->getSize();
 		scale = { (float)newWidth / (float)originalSize.x, -(float)newHeight / (float)originalSize.y };
 	}
+	void SpriteRendererComponent::SetColor(const sf::Color& color)
+	{
+		sprite->setColor(color);
+	}
 
 	void SpriteRendererComponent::FlipX(bool flip)
 	{

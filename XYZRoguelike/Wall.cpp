@@ -18,7 +18,7 @@ namespace XYZRoguelike
 		}
 		else
 		{
-			LOG_ERROR("Не удалось установить текстуру стены: platform");
+			LOG_ERROR("Failed to set wall texture: platform");
 			assert(false && "Texture 'platform' is required for Wall");
 			return;
 		}
